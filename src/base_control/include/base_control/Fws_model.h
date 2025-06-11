@@ -1,3 +1,14 @@
+/**
+ * @file Fws_model.h
+ * @author LeoXiuNeng (LiWeiran227@163.com)
+ * @brief  car model, include 4WS and double ACKeman
+ * @version 0.1
+ * @date 2025-06-11
+ * 
+ * @copyright Copyright (c) 2025
+ * 
+ */
+
 # ifndef _FWS_MODEL_H_
 # define _FWS_MODEL_H_
 
@@ -10,7 +21,7 @@ using std::hypot;
 namespace LXN_ALG
 {
 /**
- * @brief 汽车运动学模型选择
+ * @brief 汽车运动学模型
  */
 enum class Carmode : uint8_t 
 {
@@ -44,17 +55,30 @@ public:
 
     /**
      * @brief 对外的唯一接口
-     * @param vel 计算后的速度
-     * @param pos 计算后的角度位置
+     * @param current_vel 当前速度
+     * @param current_pos 当前角度位置
+     * @param target_vel 计算后的速度
+     * @param target_pos 计算后的角度位置
      * @param msg 传入的整车速度
      * @param carmode 运动学模型选择，默认是不指定
      */
-    bool Calculate(double *vel, double *pos,
+    bool Calculate(double* current_vel, double* current_pos,
+                   double* target_vel, double* target_pos,
                    const geometry_msgs::Twist::ConstPtr &msg,
                    Carmode carmode = Carmode::undetermined);
 
-private:
+    /**
+     * @brief 对外的唯一接口
+     * @param target_vel 计算后的速度
+     * @param target_pos 计算后的角度位置
+     * @param msg 传入的整车速度
+     * @param carmode 运动学模型选择，默认是不指定
+     */
+    bool Calculate(double *target_vel, double *target_pos,
+                   const geometry_msgs::Twist::ConstPtr &msg,
+                   Carmode carmode);
 
+private:
     /**
      * @brief 计算双阿克曼模型
      * @param vel 计算后的速度
@@ -79,6 +103,16 @@ private:
      * @param msg 传入的整车速度
      */
     void _autochoose_carmode(Carmode &carmode, const geometry_msgs::Twist::ConstPtr &msg);
+
+    /**
+     * @brief 限制线速度，当转角偏差过大时
+     * @param msg         整车速度
+     * @param current_pos 当前角度位置
+     * @param target_pos  目标角度位置
+     * @param target_vel  目标线速度
+     */
+    void _limt_linear(const geometry_msgs::Twist::ConstPtr &msg, double* current_pos, 
+                        double* target_pos, double* target_vel);
 
 private:
     // Ackman

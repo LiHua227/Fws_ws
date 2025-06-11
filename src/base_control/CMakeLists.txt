@@ -104,10 +104,10 @@ find_package(catkin REQUIRED COMPONENTS
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES base_control
-#  CATKIN_DEPENDS geometry_msgs roscpp rospy std_msgs
-#  DEPENDS system_lib
+ INCLUDE_DIRS include
+ LIBRARIES base_control
+ CATKIN_DEPENDS geometry_msgs roscpp rospy std_msgs
+ DEPENDS system_lib
 )
 
 ###########
@@ -135,13 +135,22 @@ add_executable(base_control_node
               include/base_control/controlcan.h
 )
 add_dependencies(base_control_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-target_link_libraries(base_control_node ${catkin_LIBRARIES} controlcan base_control)
+target_link_libraries(base_control_node ${catkin_LIBRARIES} base_control controlcan )
 
 
 ## 测试
-add_executable(Test_4WS_mode Test/Test_4ws_mode.cpp include/base_control/Fws_model.h )
+add_executable(Test_4WS_mode Test/Test_4ws_mode.cpp include/base_control/Fws_model.h)
 add_dependencies(Test_4WS_mode ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(Test_4WS_mode ${catkin_LIBRARIES} Fws_model)
+
+add_executable(Test_walk Test/Test_walk.cpp)
+add_dependencies(Test_walk ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(Test_walk ${catkin_LIBRARIES} CanHandle WalkHandle controlcan)
+
+add_executable(Test_steering Test/Test_steering.cpp)
+add_dependencies(Test_steering ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(Test_steering ${catkin_LIBRARIES} CanHandle SteeringHandle controlcan)
+
 
 
 

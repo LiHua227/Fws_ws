@@ -1,3 +1,14 @@
+/**
+ * @file CanHandle.h
+ * @author LeoXiuNeng (LiWeiran227@163.com)
+ * @brief CAN Handle
+ * @version 0.1
+ * @date 2025-06-11
+ * 
+ * @copyright Copyright (c) 2025
+ * 
+ */
+
 # ifndef _CANHANDLE_H_
 # define _CANHANDLE_H_
 
@@ -12,6 +23,9 @@
 namespace LXN_ALG
 {
 
+/**
+ * @brief 封装CAN卡库函数。用于收发CAN
+ */
 class CanHandle
 {
 public:
@@ -40,6 +54,16 @@ public:
      */
     bool SendData(int can_id, const unsigned char* data);
 
+
+    /**
+     * @brief 发送数据
+     * @param can_id 目标设备ID
+     * @param data 发送的数据内容 
+     * @param sleep_time 消息间隔时间 
+     * @return 是否发送成功
+     */
+    bool SendData(int can_id, const unsigned char* data,double sleep_time);
+
     /**
      * @brief 接收数据
      * @param can_id 接收的目标ID
@@ -67,6 +91,7 @@ private:
 }; // class CanHandle
 
 typedef  std::shared_ptr<CanHandle>  CanHandle_ptr;
+
 } // namespace LXN_ALG
 
 

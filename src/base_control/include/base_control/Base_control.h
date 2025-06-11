@@ -1,3 +1,14 @@
+/**
+ * @file Base_control.h
+ * @author LeoXiuNeng (LiWeiran227@163.com)
+ * @brief General control for car, use WalkHandel and SteeringHandle
+ * @version 0.1
+ * @date 2025-06-11
+ * 
+ * @copyright Copyright (c) 2025
+ * 
+ */
+
 # ifndef _BASE_CONTROL_H_
 # define _BASE_CONTROL_H_
 
@@ -20,7 +31,7 @@ public:
     /**
      * @brief 无参析构
      */
-    ~Base_control();
+    ~Base_control(){};
 
 private:
     /**
@@ -39,6 +50,7 @@ private:
     ros::NodeHandle nh_;
     ros::NodeHandle private_nh_;
 
+    // Sub
     ros::Subscriber cmd_vel_sub_;
 
 }; // class LXN_ALG

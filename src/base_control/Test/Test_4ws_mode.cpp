@@ -3,7 +3,7 @@
 
 void cmd_vel_CB(const geometry_msgs::Twist::ConstPtr &msg)
 { 
-    LXN_ALG::FWS_MODEL car_mode(1.9, 0.9);
+    LXN_ALG::FWS_MODEL car_mode(1.29, 0.82);
     double pos[4], vel[4];
     car_mode.Calculate(vel, pos, msg, LXN_ALG::Carmode::undetermined);
 
@@ -15,7 +15,6 @@ int main(int argc, char  *argv[])
 {
     ros::init(argc, argv, "Test_4WS_mode");
     
-
     ros::NodeHandle nh;
     ros::Subscriber vel_sub_ = nh.subscribe("/cmd_vel", 1, cmd_vel_CB);
     

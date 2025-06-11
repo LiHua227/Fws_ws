@@ -1,3 +1,14 @@
+/**
+ * @file WalkHandle.h
+ * @author LeoXiuNeng (LiWeiran227@163.com)
+ * @brief control four walk montor
+ * @version 0.1
+ * @date 2025-06-11
+ * 
+ * @copyright Copyright (c) 2025
+ * 
+ */
+
 # ifndef _WALKHANDLE_H_
 # define _WALKHANDLE_H_
 
@@ -7,6 +18,9 @@
 
 namespace LXN_ALG
 {
+/**
+ * @brief 封装行走电机的控制协议，接收速度，调用CAN发送约定协议
+ */
 class Walk_Handle
 {
 public:

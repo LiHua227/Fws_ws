@@ -1,14 +1,26 @@
+/**
+ * @file SteeringHandle.h
+ * @author LeoXiuNeng (LiWeiran227@163.com)
+ * @brief control four steering Motor
+ * @version 0.1
+ * @date 2025-06-11
+ * 
+ * @copyright Copyright (c) 2025
+ * 
+ */
+
 # ifndef _STEERINGHANDLE_H_
 # define _STEERINGHANDLE_H_
 
 # include <cmath>
-
 # include <CanHandle.h>
-
 # include <ros/ros.h>
 
 namespace LXN_ALG
 {
+/**
+ * @brief 封装转向电机的控制协议，接收位置，调用CAN发送约定协议
+ */
 class Steering_Handle
 {
 public:
@@ -99,31 +111,33 @@ private:
      */
     int _LEBttes2Int(const unsigned char* array);
 
-private:
-    CanHandle_ptr CanHandle_;
+    /**
+     * @brief 使能电机
+     */
+    void _Enable();
 
-    int reduce_ratio_; // 减速比
+private:
+    CanHandle_ptr CanHandle_; // CAN句柄
+
+    bool enable_;          // 使能标志位
+    int reduce_ratio_;     // 减速比
     int Pulse_per_circle_; // 电机转一圈的脉冲数
 
-    double pose_[4]; // 轮子实时位置
     std::array<int, 4> Zero_pulse_; // 零位脉冲
-
-    // 各电机发送时CAN_ID
-    std::array<int, 4> S_Can_Id_;
-    // 各电机接收时的CAN_ID
-    std::array<int, 4> R_Can_Id_;
+    std::array<int, 4> S_Can_Id_;   // 各电机发送时CAN_ID
+    std::array<int, 4> R_Can_Id_;   // 各电机接收时的CAN_ID
 
     // 舵机控制协议
-    unsigned char motion_mode_[8]        = {0x2F, 0x60, 0x60, 0x00, 0x00, 0x00, 0x00, 0x00};    // 修改运动模式
+    unsigned char motion_mode_[8]        = {0x2F, 0x60, 0x60, 0x00, 0x01, 0x00, 0x00, 0x00};    // 修改运动模式
     unsigned char target_position_[8]    = {0x23, 0x7A, 0x60, 0x00, 0x00, 0x00, 0x00, 0x00};    // 写目标位置
-    unsigned char work_speed_[8]         = {0x23, 0x81, 0x60, 0x00, 0xE8, 0x03, 0x00, 0x00};    // 写工作速度
-    unsigned char acceleration_speed_[8] = {0x23, 0x83, 0x60, 0x00, 0x64, 0x00, 0x00, 0x00};    // 写加速度
-    unsigned char deceleration_speed_[8] = {0x23, 0x84, 0x60, 0x00, 0x64, 0x00, 0x00, 0x00};    // 写减速度
+    unsigned char work_speed_[8]         = {0x23, 0x81, 0x60, 0x00, 0x58, 0x1B, 0x00, 0x00};    // 写工作速度 
+    unsigned char acceleration_speed_[8] = {0x23, 0x83, 0x60, 0x00, 0x58, 0x1B, 0x00, 0x00};    // 写加速度 
+    unsigned char deceleration_speed_[8] = {0x23, 0x84, 0x60, 0x00, 0x58, 0x1B, 0x00, 0x00};    // 写减速度
     unsigned char motor_ready_[8]        = {0x2B, 0x40, 0x60, 0x00, 0x06, 0x00, 0x00, 0x00};    // 电机准备
     unsigned char wait_for_enable_[8]    = {0x2B, 0x40, 0x60, 0x00, 0x07, 0x00, 0x00, 0x00};    // 电机等待使能
-    unsigned char motor_enable_[8]       = {0x2B, 0x40, 0x60, 0x00, 0x0F, 0x00, 0x00, 0x00};    // 电机使能
-    unsigned char motor_motion_[8]       = {0x2B, 0x40, 0x60, 0x00, 0x1F, 0x00, 0x00, 0x00};    // 电机运动
-    unsigned char read_position_[8]      = {0x40, 0x64, 0x60, 0x00, 0x00, 0x00, 0x00, 0x00};
+    unsigned char motor_enable_[8]       = {0x2B, 0x40, 0x60, 0x00, 0x2F, 0x00, 0x00, 0x00};    // 电机使能
+    unsigned char motor_motion_[8]       = {0x2B, 0x40, 0x60, 0x00, 0x3F, 0x00, 0x00, 0x00};    // 电机运动
+    unsigned char read_position_[8]      = {0x40, 0x64, 0x60, 0x00, 0x00, 0x00, 0x00, 0x00};    // 读电机位置
 
 }; // class  steering_Handle
 
